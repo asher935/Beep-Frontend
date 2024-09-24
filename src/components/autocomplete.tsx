@@ -11,7 +11,10 @@ import {
     useRole,
     useClick,
     FloatingPortal,
-    flip
+    flip,
+    useFocus,
+    shift,
+    autoUpdate
 } from '@floating-ui/react';
 
 
@@ -79,8 +82,8 @@ export default function Autocomplete<T>(
 
             const filter = setTimeout(() => {
                 setIsLoading(false)
-
-                const filtered = props.filterOptions ? props.filterOptions(props.options, inputValue) : optionIsString ? defaultFilter((props.options as string[]), inputValue) : []
+                const filtered = props.filterOptions ? props.filterOptions(props.options, inputValue) : 
+                    optionIsString ? defaultFilter((props.options as string[]), inputValue) : []
                 setFilteredData(filtered as T[])
             }, timer)
 
@@ -96,7 +99,9 @@ export default function Autocomplete<T>(
         placement: "bottom",
         open: open,
         onOpenChange: setOpen,
+        whileElementsMounted: autoUpdate,
         middleware: [
+            shift(),
             offset(1),
             size({
                 apply({ rects, elements }) {
@@ -117,6 +122,7 @@ export default function Autocomplete<T>(
     const click = useClick(context, { toggle: false, });
     const dismiss = useDismiss(context);
     const role = useRole(context, { role: "listbox" });
+    const focus = useFocus(context);
 
     const listNav = useListNavigation(context, {
         loop: true,
@@ -125,7 +131,7 @@ export default function Autocomplete<T>(
         onNavigate: setActiveIndex,
     });
 
-    const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([dismiss, role, listNav, click]);
+    const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([dismiss, role, listNav, click, focus]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
