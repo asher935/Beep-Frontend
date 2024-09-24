@@ -11,5 +11,5 @@ npm install
 npm run dev
 
 The app should be running on http://localhost:5173/
-This repository also has been deployed on 
+This repository also has been deployed on https://main--beep-frontend-assessment.netlify.app
 ```

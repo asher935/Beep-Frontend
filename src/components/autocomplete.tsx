@@ -208,7 +208,7 @@ export default function Autocomplete<T>(
                                 key={index}
                                 role="option"
                                 tabIndex={activeIndex === index ? 0 : -1}
-                                className={`flex w-full justify-between px-4 py-2 outline-none  ${index % 2 != 0 && 'bg-slate-50'} ${activeIndex === index ? 'bg-blue-100' : ''}`}
+                                className={`flex w-full justify-between px-4 py-2 outline-none ${activeIndex === index ? 'bg-blue-100' : index % 2 != 0 && 'bg-slate-50'}`}
                                 ref={(node) => {
                                     listRef.current[index] = node;
                                 }}
