@@ -60,12 +60,12 @@ function defaultFilter(options: string[], inputValue: string) {
 export default function Autocomplete<T>(
     props: AutocompleteProps<T>
 ) {
+    const [selectedOptions, setSelectedOptions] = useState<T[] | T>(props.value || []);
+    const [inputValue, setInputValue] = useState(props.multiple?"":(selectedOptions as string));
     const [open, setOpen] = useState(false);
-    const [inputValue, setInputValue] = useState("");
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [filteredData, setFilteredData] = useState<T[]>([]);
-    const [selectedOptions, setSelectedOptions] = useState<T[]>([]);
     const [timer, setTimer] = useState(0);
 
     const optionIsString = typeof props.options[0] === 'string';
@@ -152,10 +152,11 @@ export default function Autocomplete<T>(
 
     const handleMultipleSelect = (option: T,) => {
         setSelectedOptions(prevSelected => {
-            if (prevSelected.includes(option)) {
-                return prevSelected.filter((item) => item !== option);
+            let prev = prevSelected as T[];
+            if (prev.includes(option)) {
+                return prev.filter((item) => item !== option);
             } else {
-                return [...prevSelected, option];
+                return [...prev, option];
             }
         })
 
@@ -234,7 +235,7 @@ export default function Autocomplete<T>(
                             >
                                 <div className="flex w-full items-center justify-between">
                                     {props.renderOption ? props.renderOption(option) : optionIsString && <div className="text-gray-500 text-sm">{option as String}</div>}
-                                    {props.multiple && <input type="checkbox" onChange={() => handleMultipleSelect(option)} checked={selectedOptions.includes(option)} className="w-4 h-4 text-blue-600 transition duration-150 ease-in-out form-checkbox" />}
+                                    {props.multiple && <input type="checkbox" onChange={() => handleMultipleSelect(option)} checked={(selectedOptions as T[]).includes(option)} className="w-4 h-4 text-blue-600 transition duration-150 ease-in-out form-checkbox" />}
                                 </div>
                             </label>
                         ))}

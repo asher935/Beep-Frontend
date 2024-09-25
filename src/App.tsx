@@ -26,6 +26,7 @@ function App() {
               console.log(inputValue)
             }}
             options={currencies2}
+            value={currencies2.slice(0,3)}
             renderOption={(option) => (
               <div className="flex flex-col items-center justify-start gap-2">
                 <div className="text-gray-800 w-full">{option.flag} {option.name}</div>
@@ -52,6 +53,7 @@ function App() {
               console.log(inputValue)
             }}
             options={currencies}
+            value='US Dollar'
             /* renderOption={(option) => (
               <div className="text-gray-800">{option}</div>
             )} */
